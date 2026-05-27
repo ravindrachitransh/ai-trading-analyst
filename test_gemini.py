@@ -1,7 +1,9 @@
+import os
+
 from google import genai
 
 # Initialize client
-client = genai.Client(api_key="AIzaSyB9UR1GfpYfCpzmWfa44neOruDOZdJ1M98")
+client = genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
 
 # Generate content
 response = client.models.generate_content(
