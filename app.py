@@ -1,7 +1,10 @@
 # app.py
 
+from urllib import request
+
 import streamlit as st
 import base64
+import requests
 
 from data import fetch_stock_data, get_stock_metrics
 from charts import create_candlestick_chart
@@ -30,53 +33,51 @@ if st.button("Analyze Stock"):
     try:
 
         # Fetch stock data
-        data = fetch_stock_data(ticker)
+        data = requests.get(f"http://localhost:8000/stock/{ticker}").json()
+        st.write(data["report"])
 
-        # Extract metrics
-        metrics = get_stock_metrics(data)
 
-        # Create chart
-        fig = create_candlestick_chart(data)
 
-        # Generate AI report
-        report = generate_report(metrics, uploaded_file)
+        # # Create chart
+        # fig = create_candlestick_chart(data)
 
-        # Display chart
-        st.plotly_chart(fig)
 
-        # Display metrics
-        column_1, column_2, column_3, column_4 = st.columns(4)
+        # # Display chart
+        # st.plotly_chart(fig)
 
-        with column_1:
-            st.metric(
-                "Latest Price",
-                metrics["latest_price"]
-            )
+        # # Display metrics
+        # column_1, column_2, column_3, column_4 = st.columns(4)
 
-        with column_2:
-            st.metric(
-                "Average Volume",
-                metrics["avg_volume"]
-            )
+        # with column_1:
+        #     st.metric(
+        #         "Latest Price",
+        #         metrics["latest_price"]
+        #     )
 
-        with column_3:
-            st.metric(
-                "Trend",
-                metrics["trend"].capitalize()
-            )
+        # with column_2:
+        #     st.metric(
+        #         "Average Volume",
+        #         metrics["avg_volume"]
+        #     )
 
-        with column_4:
-            st.metric(
-                "RSI",
-                metrics["rsi"]
-            )
+        # with column_3:
+        #     st.metric(
+        #         "Trend",
+        #         metrics["trend"].capitalize()
+        #     )
 
-        # Display AI report
-        st.subheader("🤖 AI Trading Report")
+        # with column_4:
+        #     st.metric(
+        #         "RSI",
+        #         metrics["rsi"]
+        #     )
 
-        st.write(report)
+        # # Display AI report
+        # st.subheader("🤖 AI Trading Report")
 
-        st.success("Analysis completed!")
+        # st.write(report)
+
+        # st.success("Analysis completed!")
 
     except Exception as e:
         st.error(f"Error: {e}")

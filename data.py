@@ -30,13 +30,15 @@ def calculate_rsi(data):
 
 def get_stock_metrics(data):
 
-    latest_price = data["Close"].iloc[-1]
+    close_prices = data["Close"].dropna()
+
+    latest_price = close_prices.iloc[-1]
 
     avg_volume = data["Volume"].mean()
 
     trend = (
         "upward"
-        if data["Close"].iloc[-1] > data["Close"].iloc[0]
+        if latest_price > close_prices.iloc[0]
         else "downward"
     )
 

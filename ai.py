@@ -1,5 +1,7 @@
 import base64
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 from openai import OpenAI
 
