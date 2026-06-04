@@ -21,6 +21,10 @@ ticker = st.text_input("Stock Symbol")
 
 uploaded_file = st.file_uploader("Or upload an image file with stock data")
 
+# Debugging: Display uploaded file info
+
+# st.write("Outside button:", uploaded_file)
+
 if uploaded_file is not None:
     
 
@@ -32,9 +36,43 @@ if st.button("Analyze Stock"):
 
     try:
 
-        # Fetch stock data
-        data = requests.get(f"http://localhost:8000/stock/{ticker}").json()
+        payload = {
+            "ticker": ticker
+        }
+
+        files = None
+
+        if uploaded_file is not None:
+            files = {
+                "uploaded_file": (
+                    uploaded_file.name,
+                    uploaded_file,
+                    uploaded_file.type
+                )
+            }
+            
+        # Debugging: Display payload and file info before sending request
+        # st.write("uploaded_file =", uploaded_file)
+        # if uploaded_file is not None:
+        #     st.write(uploaded_file.name)
+
+        response = requests.post(
+            "http://localhost:8000/analyze",
+            data=payload,
+            files=files
+        )
+        
+        # st.write(response.status_code)
+        # st.write(response.text)
+        
+        data = response.json()
+
         st.write(data["report"])
+
+        st.write(f"Latest Price: {data['latest price']}")
+        st.write(f"RSI: {data['rsi']}")
+        st.write(f"Average Volume: {data['avg volume']}")
+        st.write(f"Trend: {data['trend']}")
 
 
 

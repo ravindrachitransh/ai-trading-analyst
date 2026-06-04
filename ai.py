@@ -46,11 +46,18 @@ def generate_report(stock_data, uploaded_file=None):
         return response.output_text
 
     # If image uploaded → multimodal analysis
-    img_bytes = uploaded_file.read()
+    
+    # Debugging: Print info about the uploaded file
+    # print("IMAGE RECEIVED")
+    # print(uploaded_file)
+    
+    img_bytes = uploaded_file.file.read()
+
+    print(type(img_bytes))
 
     b64 = base64.b64encode(img_bytes).decode()
 
-    data_uri = f"data:{uploaded_file.type};base64,{b64}"
+    data_uri = f"data:{uploaded_file.content_type};base64,{b64}"
 
     vision_prompt = f"""
     {prompt}
