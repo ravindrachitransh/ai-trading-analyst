@@ -1,1 +1,2 @@
-<img width="1252" height="888" alt="image" src="https://github.com/user-attachments/assets/d723f28e-633f-4e41-aa8f-7200f41c7d23" />
+<img width="1030" height="308" alt="TradingAppArchitecture drawio" src="https://github.com/user-attachments/assets/8d2763c1-57b6-44c4-b114-3839c33b53d1" />
+
