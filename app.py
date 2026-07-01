@@ -1,5 +1,10 @@
 # app.py
 
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
 from urllib import request
 
 import streamlit as st
@@ -8,7 +13,6 @@ import requests
 
 from data import fetch_stock_data, get_stock_metrics
 from charts import create_candlestick_chart
-from ai import generate_report
 
 
 st.title("📈 AI Trading Analyst")
@@ -56,8 +60,10 @@ if st.button("Analyze Stock"):
         # if uploaded_file is not None:
         #     st.write(uploaded_file.name)
 
+        backend_url = os.getenv("BACKEND_URL")
+
         response = requests.post(
-            "http://localhost:8000/analyze",
+            f"{backend_url}/analyze",
             data=payload,
             files=files
         )
@@ -67,21 +73,26 @@ if st.button("Analyze Stock"):
         
         data = response.json()
 
+        print("RESPONSE DATA:", data)
+        
+        #### Earlier it worked but now data has changed to .json() format, so we need to access the fields accordingly
+        
         st.write(data["report"])
-
-        st.write(f"Latest Price: {data['latest price']}")
-        st.write(f"RSI: {data['rsi']}")
-        st.write(f"Average Volume: {data['avg volume']}")
-        st.write(f"Trend: {data['trend']}")
-
+        # st.write(f"Latest Price: {data['latest price']}")
+        # st.write(f"RSI: {data['rsi']}")
+        # st.write(f"Average Volume: {data['avg volume']}")
+        # st.write(f"Trend: {data['trend']}")
 
 
-        # # Create chart
-        # fig = create_candlestick_chart(data)
+        ### This repeats the same API call to fetch stock data, but we can optimize it later by including the necessary data in the API response
+        
+        stock_data = fetch_stock_data(ticker)
 
+        fig = create_candlestick_chart(stock_data)
 
-        # # Display chart
-        # st.plotly_chart(fig)
+        st.plotly_chart(fig)
+        
+        ### this part is for displaying the metrics and report, but we can optimize it by including the necessary data in the API response instead of making another call to fetch stock data
 
         # # Display metrics
         # column_1, column_2, column_3, column_4 = st.columns(4)

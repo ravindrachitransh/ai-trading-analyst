@@ -53,6 +53,7 @@ def generate_report(stock_data, uploaded_file=None):
     
     img_bytes = uploaded_file.file.read()
 
+    # Debugging: Print type and size of the image bytes
     print(type(img_bytes))
 
     b64 = base64.b64encode(img_bytes).decode()

@@ -4,3 +4,6 @@ yfinance
 plotly
 python-dotenv
 pandas
+fastapi
+uvicorn
+python-multipart
